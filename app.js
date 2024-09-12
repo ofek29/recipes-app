@@ -1,52 +1,42 @@
 const express = require('express');
-const app = express();
-require('dotenv').config();
+const path = require('path')
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+require('dotenv').config();
 
+const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
 
-const userController = require('./controllers/userController');
-app.use('/', (req, res, next) => {
-    console.log('middleware');
-    let myStatusCode = userController.refresh(req, res);
-    console.log('returned from refresh');
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-    if (!(myStatusCode === 200)) { //to do check. when not to call next (!res.headersSent)
-        console.log('user is not logged in');
-        next();
-    }
-})
+// const userController = require('./controllers/userController');
+// app.use('/', (req, res, next) => {
+//     console.log('middleware');
+//     let myStatusCode = userController.refresh(req, res);
+//     console.log('returned from refresh');
 
-app.use(express.static("public"))
+//     if (!(myStatusCode === 200)) { //to do check. when not to call next (!res.headersSent)
+//         console.log('user is not logged in');
+//         next();
+//     }
+// })
 
+app.use(express.static(path.join(__dirname, 'public')));
 
-const userRoutes = require('./routers/userRoutes');
+const homeRoutes = require('./routes/home-routes');
+app.get('/', homeRoutes);
+
+const userRoutes = require('./routes/userRoutes');
 app.use('/users', userRoutes);
 
+const recipesRoutes = require('./routes/recipes-routes');
+app.use('/', recipesRoutes);
 
 
 
-
-// const recipeRoutes = require('./routes/recipeRoutes');
-// app.use('/recipes', recipes);
-
-
-
-
-
-
-// app.get('/', (req, res) => {
-//     // res.send('welcome to my recipes website')
-//     console.log('im main page? ');
-
-// })
-
-// app.get('/recipes', (req, res) => {
-//     res.send('hi there sxtds')
-// })
 const port = 3121;
 
 app.listen(`${port}`, () => {

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/index.css">
+</head>
+
+<body>
+
+    <div id="nav-bar-div"></div>
+
+    <div id="recipe-div">
+        <h1>Recipes</h1>
+
+        <input type="text" id="search-bar" placeholder="Search for recipes...">
+
+        <div id="recipe-gallery">
+
+        </div>
+    </div>
+
+
+    //recipes gallery build
+    const recipeGallery = document.getElementById('recipe-gallery');
+    if (recipeGallery) {
+    recipes.forEach((recipe, index) => {
+    const card = document.createElement('div');
+    card.className = 'recipe-card';
+    card.innerHTML = `
+    <img src="${recipe.image}" alt="${recipe.name}">
+    <h3>${recipe.name}</h3>
+    <ul>${recipe.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}</ul>
+    <button class="save-recipe-button" data-index="${index}">Save Recipe</button>
+    `;
+    recipeGallery.appendChild(card);
+    });
+    }
+
+
+    <script src="/JS/nav.js"></script>
+    <script src="/JS/index.js"></script>
+
+
+</body>
+
+</html>
